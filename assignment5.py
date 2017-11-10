@@ -127,6 +127,7 @@ class CSP:
         iterations of the loop.
         """
 
+<<<<<<< Updated upstream
         '''
         function BACKTRACKING-SEARCH(csp) returns a solution, or failure
             return BACKTRACK({ }, csp)
@@ -144,7 +145,29 @@ class CSP:
         return failure
         '''
         # TODO: IMPLEMENT THIS
-        pass
+        finished = True
+        for variable in assignment:
+            if len(variable) != 1:
+                finished = False
+
+        if finished:
+            return assignment
+
+        unassigned = select_unassigned_variable(assignment)
+        for value in unassigned:
+           if
+
+# function BACKTRACK(assignment,csp) returns a solution, or failure
+#     if assignment is complete then return assignment
+#     var = SELECT-UNASSIGNED-VARIABLE(csp)
+#     for each value in ORDER-DOMAIN-VALUES(var,assignment,csp) do
+#         if value is consistent with assignment then
+#             add {var = value} to assignment inferences = INFERENCE(csp,var,value) if inferences == failure then
+#             add inferences to assignment
+# result = BACKTRACK(assignment, csp) if result == failure then
+# return result
+# remove {var = value} and inferences from assignment
+# return failure
 
     def select_unassigned_variable(self, assignment):
         """The function 'Select-Unassigned-Variable' from the pseudocode
