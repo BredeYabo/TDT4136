@@ -3,6 +3,23 @@
 import copy
 import itertools
 
+'''
+function BACKTRACKING-SEARCH(csp) returns a solution, or failure
+    return BACKTRACK({ }, csp)
+
+function BACKTRACK(assignment,csp) returns a solution, or failure
+    if assignment is complete then return assignment
+    var ← SELECT-UNASSIGNED-VARIABLE(csp)
+    for each value in ORDER-DOMAIN-VALUES(var,assignment,csp) do
+        if value is consistent with assignment then
+            add {var = value} to assignment inferences ←INFERENCE(csp,var,value) if inferences ̸= failure then
+            add inferences to assignment
+result ← BACKTRACK(assignment, csp) if result ̸= failure then
+return result
+remove {var = value} and inferences from assignment
+return failure
+'''
+
 class CSP:
     def __init__(self):
         # self.variables is a list of the variable names in the CSP
@@ -194,9 +211,8 @@ def print_sudoku_solution(solution):
     """
     for row in range(9):
         for col in range(9):
-            print solution['%d-%d' % (row, col)][0],
+            print(solution['%d-%d' % (row, col)][0])
             if col == 2 or col == 5:
-                print '|',
-        print
+                print('|')
         if row == 2 or row == 5:
-            print '------+-------+------'
+            print('------+-------+------')
