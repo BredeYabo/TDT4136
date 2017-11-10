@@ -127,7 +127,6 @@ class CSP:
         iterations of the loop.
         """
 
-<<<<<<< Updated upstream
         '''
         function BACKTRACKING-SEARCH(csp) returns a solution, or failure
             return BACKTRACK({ }, csp)
@@ -145,17 +144,28 @@ class CSP:
         return failure
         '''
         # TODO: IMPLEMENT THIS
+
+        # Base case
         finished = True
         for variable in assignment:
-            if len(variable) != 1:
+            if len(variable) != 1: # If every variable has one value, Finished
                 finished = False
-
         if finished:
             return assignment
 
+        
+        # Get a variable with more than one value
         unassigned = select_unassigned_variable(assignment)
-        for value in unassigned:
-           if
+        for value in  unassigned
+            new_ass = assignment
+            
+            # Create a new assignment based on the new constraint
+
+
+            # Check if new assignment is consistent
+            inference(new_ass, PLACEHOLDER) 
+
+
 
 # function BACKTRACK(assignment,csp) returns a solution, or failure
 #     if assignment is complete then return assignment
