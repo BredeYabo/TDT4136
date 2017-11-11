@@ -3,23 +3,6 @@
 import copy
 import itertools
 
-'''
-function BACKTRACKING-SEARCH(csp) returns a solution, or failure
-    return BACKTRACK({ }, csp)
-
-function BACKTRACK(assignment,csp) returns a solution, or failure
-    if assignment is complete then return assignment
-    var = SELECT-UNASSIGNED-VARIABLE(csp)
-    for each value in ORDER-DOMAIN-VALUES(var,assignment,csp) do
-        if value is consistent with assignment then
-            add {var = value} to assignment inferences = INFERENCE(csp,var,value) if inferences == failure then
-            add inferences to assignment
-result = BACKTRACK(assignment, csp) if result == failure then
-return result
-remove {var = value} and inferences from assignment
-return failure
-'''
-
 class CSP:
     def __init__(self):
         # self.variables is a list of the variable names in the CSP
@@ -94,7 +77,9 @@ class CSP:
         # ensure that any changes made to 'assignment' does not have any
         # side effects elsewhere.
         assignment = copy.deepcopy(self.domains)
-
+  
+        for ass in assignment['8-4']:
+            print ass
         # Run AC-3 on all constraints in the CSP, to weed out all of the
         # values that are not arc-consistent to begin with
         self.inference(assignment, self.get_all_arcs())
@@ -127,22 +112,6 @@ class CSP:
         iterations of the loop.
         """
 
-        '''
-        function BACKTRACKING-SEARCH(csp) returns a solution, or failure
-            return BACKTRACK({ }, csp)
-
-        function BACKTRACK(assignment,csp) returns a solution, or failure
-            if assignment is complete then return assignment
-            var ← SELECT-UNASSIGNED-VARIABLE(csp)
-            for each value in ORDER-DOMAIN-VALUES(var,assignment,csp) do
-                if value is consistent with assignment then
-                    add {var = value} to assignment inferences ←INFERENCE(csp,var,value) if inferences ̸= failure then
-                    add inferences to assignment
-        result ← BACKTRACK(assignment, csp) if result ̸= failure then
-        return result
-        remove {var = value} and inferences from assignment
-        return failure
-        '''
         # TODO: IMPLEMENT THIS
 
         # Base case
@@ -155,29 +124,15 @@ class CSP:
 
         
         # Get a variable with more than one value
-        unassigned = select_unassigned_variable(assignment)
-        for value in  unassigned
+        unassigned = self.select_unassigned_variable(assignment)
+        for value in  unassigned:
             new_ass = assignment
             
             # Create a new assignment based on the new constraint
 
 
             # Check if new assignment is consistent
-            inference(new_ass, PLACEHOLDER) 
 
-
-
-# function BACKTRACK(assignment,csp) returns a solution, or failure
-#     if assignment is complete then return assignment
-#     var = SELECT-UNASSIGNED-VARIABLE(csp)
-#     for each value in ORDER-DOMAIN-VALUES(var,assignment,csp) do
-#         if value is consistent with assignment then
-#             add {var = value} to assignment inferences = INFERENCE(csp,var,value) if inferences == failure then
-#             add inferences to assignment
-# result = BACKTRACK(assignment, csp) if result == failure then
-# return result
-# remove {var = value} and inferences from assignment
-# return failure
 
     def select_unassigned_variable(self, assignment):
         """The function 'Select-Unassigned-Variable' from the pseudocode
@@ -198,6 +153,8 @@ class CSP:
         is the initial queue of arcs that should be visited.
         """
         # TODO: IMPLEMENT THIS
+        while len(queue) != 0:
+            x, y = queue.pop()
         pass
 
     def revise(self, assignment, i, j):
@@ -210,7 +167,9 @@ class CSP:
         legal values in 'assignment'.
         """
         # TODO: IMPLEMENT THIS
-        pass
+        revised = False
+        for pair in assignment:
+            pass
 
 def create_map_coloring_csp():
     """Instantiate a CSP representing the map coloring problem from the
@@ -264,8 +223,14 @@ def print_sudoku_solution(solution):
     """
     for row in range(9):
         for col in range(9):
-            print(solution['%d-%d' % (row, col)][0])
+            print solution['%d-%d' % (row, col)][0],
             if col == 2 or col == 5:
-                print('|')
+                print'|'
         if row == 2 or row == 5:
-            print('------+-------+------')
+            print '------+-------+------'
+
+
+board = 'easy.txt'
+csp = create_sudoku_csp(board)
+solution = csp.backtracking_search()
+#print_sudoku_solution(solution)
