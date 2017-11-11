@@ -168,8 +168,19 @@ class CSP:
         """
         # TODO: IMPLEMENT THIS
         revised = False
-        for pair in assignment:
-            pass
+        for val_i in assignment[i]:
+            satisfiable = False
+            #Checking for occurence of non satisfiable arc
+            for val_j in values[j]:
+                if (val_i, val_j) in self.constraints[i][j]:
+                    satisfiable = True
+                    break
+
+                if satisfiable != True:
+                    assignment[i].remove(val_i)
+                    revised = True
+
+        return revised
 
 def create_map_coloring_csp():
     """Instantiate a CSP representing the map coloring problem from the
