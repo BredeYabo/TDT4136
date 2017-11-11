@@ -144,7 +144,6 @@ class CSP:
         for variable in assignment:
             if len(variable):
                 return variable
-        pass
 
     def inference(self, assignment, queue):
         """The function 'AC-3' from the pseudocode in the textbook.
@@ -155,7 +154,14 @@ class CSP:
         # TODO: IMPLEMENT THIS
         while len(queue) != 0:
             x, y = queue.pop()
-        pass
+            if self.revise(assignment, x, y):
+                if len(assignment) == 0:
+                    return False
+                neighbours = self.get_neighbouring_arcs(x)
+                for n in neighbours:
+                    queue.append(n)
+
+        return True
 
     def revise(self, assignment, i, j):
         """The function 'Revise' from the pseudocode in the textbook.
