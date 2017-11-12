@@ -78,8 +78,6 @@ class CSP:
         # side effects elsewhere.
         assignment = copy.deepcopy(self.domains)
   
-        for ass in assignment['8-4']:
-            print ass
         # Run AC-3 on all constraints in the CSP, to weed out all of the
         # values that are not arc-consistent to begin with
         self.inference(assignment, self.get_all_arcs())
@@ -114,25 +112,23 @@ class CSP:
 
         # TODO: IMPLEMENT THIS
 
-        # Base case
-        finished = True
-        for variable in assignment:
-            if len(variable) != 1: # If every variable has one value, Finished
-                finished = False
-        if finished:
-            return assignment
+	finished = True
+	for a in assignment:
+	    if len(assignment[a]) != 1:
+		finished = False
 
-        
-        # Get a variable with more than one value
+	if finished == True:
+	    return assignment
+
         unassigned = self.select_unassigned_variable(assignment)
-        for value in  unassigned:
-            new_ass = assignment
-            
-            # Create a new assignment based on the new constraint
-
-
-            # Check if new assignment is consistent
-
+        for value in assignment[unassigned]:
+	    a_copy = copy.deepcopy(assignment)
+            a_copy[unassigned] = [value]
+	    if self.inference(a_copy, self.get_all_arcs()):
+                success = self.backtrack(a_copy)
+                if success:
+                    return success	
+        return False
 
     def select_unassigned_variable(self, assignment):
         """The function 'Select-Unassigned-Variable' from the pseudocode
@@ -141,9 +137,9 @@ class CSP:
         of legal values has a length greater than one.
         """
         # TODO: IMPLEMENT THIS
-        for variable in assignment:
-            if len(variable):
-                return variable
+        for a in assignment:
+            if len(assignment[a]) > 0:
+		return a
 
     def inference(self, assignment, queue):
         """The function 'AC-3' from the pseudocode in the textbook.
@@ -157,9 +153,10 @@ class CSP:
             if self.revise(assignment, x, y):
                 if len(assignment) == 0:
                     return False
-                neighbours = self.get_neighbouring_arcs(x)
+                neighbours = self.get_all_neighboring_arcs(x)
                 for n in neighbours:
-                    queue.append(n)
+		    if n not in queue:
+                    	queue.append(n)
 
         return True
 
@@ -177,14 +174,13 @@ class CSP:
         for val_i in assignment[i]:
             satisfiable = False
             #Checking for occurence of non satisfiable arc
-            for val_j in values[j]:
+            for val_j in assignment[j]:
                 if (val_i, val_j) in self.constraints[i][j]:
                     satisfiable = True
-                    break
 
-                if satisfiable != True:
-                    assignment[i].remove(val_i)
-                    revised = True
+            if satisfiable != True:
+                assignment[i].remove(val_i)
+                revised = True
 
         return revised
 
@@ -242,12 +238,13 @@ def print_sudoku_solution(solution):
         for col in range(9):
             print solution['%d-%d' % (row, col)][0],
             if col == 2 or col == 5:
-                print'|'
+                print'|',
+	print
         if row == 2 or row == 5:
             print '------+-------+------'
 
 
-board = 'easy.txt'
+board = 'medium.txt'
 csp = create_sudoku_csp(board)
 solution = csp.backtracking_search()
-#print_sudoku_solution(solution)
+print_sudoku_solution(solution)
