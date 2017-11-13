@@ -111,21 +111,24 @@ class CSP:
         """
 
         # TODO: IMPLEMENT THIS
-
+        # Check if all tiles onlye have one possible value
 	finished = True
 	for a in assignment:
 	    if len(assignment[a]) != 1:
 		finished = False
 
+        #Chack for base case
 	if finished == True:
 	    return assignment
 
+        #Selects the first and best unassigned variable
         unassigned = self.select_unassigned_variable(assignment)
+        # 
         for value in assignment[unassigned]:
-	    a_copy = copy.deepcopy(assignment)
-            a_copy[unassigned] = [value]
-	    if self.inference(a_copy, self.get_all_arcs()):
-                success = self.backtrack(a_copy)
+	    deepcopy = copy.deepcopy(assignment)
+            deepcopy[unassigned] = [value]
+	    if self.inference(deepcopy, self.get_all_arcs()):
+                success = self.backtrack(deepcopy)
                 if success:
                     return success	
         return False
@@ -138,7 +141,7 @@ class CSP:
         """
         # TODO: IMPLEMENT THIS
         for a in assignment:
-            if len(assignment[a]) > 0:
+            if len(assignment[a]) != 1:
 		return a
 
     def inference(self, assignment, queue):
@@ -184,23 +187,6 @@ class CSP:
 
         return revised
 
-def create_map_coloring_csp():
-    """Instantiate a CSP representing the map coloring problem from the
-    textbook. This can be useful for testing your CSP solver as you
-    develop your code.
-    """
-    csp = CSP()
-    states = [ 'WA', 'NT', 'Q', 'NSW', 'V', 'SA', 'T' ]
-    edges = { 'SA': [ 'WA', 'NT', 'Q', 'NSW', 'V' ], 'NT': [ 'WA', 'Q' ], 'NSW': [ 'Q', 'V' ] }
-    colors = [ 'red', 'green', 'blue' ]
-    for state in states:
-        csp.add_variable(state, colors)
-    for state, other_states in edges.items():
-        for other_state in other_states:
-            csp.add_constraint_one_way(state, other_state, lambda i, j: i != j)
-            csp.add_constraint_one_way(other_state, state, lambda i, j: i != j)
-    return csp
-
 def create_sudoku_csp(filename):
     """Instantiate a CSP representing the Sudoku board found in the text
     file named 'filename' in the current directory.
@@ -244,7 +230,7 @@ def print_sudoku_solution(solution):
             print '------+-------+------'
 
 
-board = 'medium.txt'
+board = 'veryhard.txt'
 csp = create_sudoku_csp(board)
 solution = csp.backtracking_search()
 print_sudoku_solution(solution)
