@@ -122,8 +122,16 @@ class CSP:
 
         #Selects the first and best unassigned variable
         unassigned = self.select_unassigned_variable(assignment)
+<<<<<<< Updated upstream
         for value in assignment[unassigned]:
             deepcopy = copy.deepcopy(assignment)
+=======
+        # going throgh each value in unassigned
+        for value in assignment[unassigned]:
+            # Making copy of assigment to not change the original
+            # assignment
+	    deepcopy = copy.deepcopy(assignment)
+>>>>>>> Stashed changes
             deepcopy[unassigned] = [value]
             if self.inference(deepcopy, self.get_all_arcs()):
                 success = self.backtrack(deepcopy)
