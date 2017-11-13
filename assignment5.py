@@ -15,6 +15,9 @@ class CSP:
         # the variable pair (i, j)
         self.constraints = {}
 
+        self.back_failed = 0
+        self.back_called = 0
+
     def add_variable(self, name, domain):
         """Add a new variable to the CSP. 'name' is the variable name
         and 'domain' is a list of the legal values for the variable.
@@ -109,34 +112,33 @@ class CSP:
         assignments and inferences that took place in previous
         iterations of the loop.
         """
-
+        self.back_called += 1
         # Check if all tiles only have one possible value
 	finished = True
 	for var in assignment:
             if len(assignment[var]) != 1:
 		finished = False
 
-        #Chack for base case
+        #Check for base case
 	if finished:
+            print "Backtrack failed: ", self.back_failed
+            print "Backtrack called: ", self.back_called
             return assignment
 
         #Selects the first and best unassigned variable
         unassigned = self.select_unassigned_variable(assignment)
-<<<<<<< Updated upstream
+
         for value in assignment[unassigned]:
-            deepcopy = copy.deepcopy(assignment)
-=======
-        # going throgh each value in unassigned
-        for value in assignment[unassigned]:
-            # Making copy of assigment to not change the original
+            # Making copy of assignment to not change the original
             # assignment
-	    deepcopy = copy.deepcopy(assignment)
->>>>>>> Stashed changes
+            deepcopy = copy.deepcopy(assignment)
             deepcopy[unassigned] = [value]
             if self.inference(deepcopy, self.get_all_arcs()):
                 success = self.backtrack(deepcopy)
                 if success:
                     return success
+
+        self.back_failed += 1
         return False
 
     def select_unassigned_variable(self, assignment):
@@ -184,6 +186,7 @@ class CSP:
                 if (val_i, val_j) in self.constraints[i][j]:
                     satisfiable = True
 
+            # remove non satisfiable value
             if satisfiable != True:
                 assignment[i].remove(val_i)
                 revised = True
@@ -233,7 +236,8 @@ def print_sudoku_solution(solution):
             print '------+-------+------'
 
 
-board = 'veryhard.txt'
+board = 'hard.txt'
 csp = create_sudoku_csp(board)
 solution = csp.backtracking_search()
 print_sudoku_solution(solution)
+
