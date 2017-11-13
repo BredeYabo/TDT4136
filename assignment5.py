@@ -77,7 +77,7 @@ class CSP:
         # ensure that any changes made to 'assignment' does not have any
         # side effects elsewhere.
         assignment = copy.deepcopy(self.domains)
-  
+
         # Run AC-3 on all constraints in the CSP, to weed out all of the
         # values that are not arc-consistent to begin with
         self.inference(assignment, self.get_all_arcs())
@@ -110,27 +110,25 @@ class CSP:
         iterations of the loop.
         """
 
-        # TODO: IMPLEMENT THIS
-        # Check if all tiles onlye have one possible value
+        # Check if all tiles only have one possible value
 	finished = True
-	for a in assignment:
-	    if len(assignment[a]) != 1:
+	for var in assignment:
+            if len(assignment[var]) != 1:
 		finished = False
 
         #Chack for base case
-	if finished == True:
-	    return assignment
+	if finished:
+            return assignment
 
         #Selects the first and best unassigned variable
         unassigned = self.select_unassigned_variable(assignment)
-        # 
         for value in assignment[unassigned]:
-	    deepcopy = copy.deepcopy(assignment)
+            deepcopy = copy.deepcopy(assignment)
             deepcopy[unassigned] = [value]
-	    if self.inference(deepcopy, self.get_all_arcs()):
+            if self.inference(deepcopy, self.get_all_arcs()):
                 success = self.backtrack(deepcopy)
                 if success:
-                    return success	
+                    return success
         return False
 
     def select_unassigned_variable(self, assignment):
@@ -139,10 +137,9 @@ class CSP:
         in 'assignment' that have not yet been decided, i.e. whose list
         of legal values has a length greater than one.
         """
-        # TODO: IMPLEMENT THIS
-        for a in assignment:
-            if len(assignment[a]) != 1:
-		return a
+        for var in assignment:
+            if len(assignment[var]) != 1:
+		return var
 
     def inference(self, assignment, queue):
         """The function 'AC-3' from the pseudocode in the textbook.
@@ -150,16 +147,15 @@ class CSP:
         the lists of legal values for each undecided variable. 'queue'
         is the initial queue of arcs that should be visited.
         """
-        # TODO: IMPLEMENT THIS
         while len(queue) != 0:
             x, y = queue.pop()
             if self.revise(assignment, x, y):
                 if len(assignment) == 0:
                     return False
                 neighbours = self.get_all_neighboring_arcs(x)
-                for n in neighbours:
-		    if n not in queue:
-                    	queue.append(n)
+                for neighbour_var in neighbours:
+                    if neighbour_var  not in queue:
+                        queue.append(neighbour_var)
 
         return True
 
@@ -172,7 +168,6 @@ class CSP:
         between i and j, the value should be deleted from i's list of
         legal values in 'assignment'.
         """
-        # TODO: IMPLEMENT THIS
         revised = False
         for val_i in assignment[i]:
             satisfiable = False
