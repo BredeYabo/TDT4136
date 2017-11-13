@@ -236,8 +236,29 @@ def print_sudoku_solution(solution):
             print '------+-------+------'
 
 
-board = 'hard.txt'
+board = 'easy.txt'
+print 'easy.txt'
 csp = create_sudoku_csp(board)
 solution = csp.backtracking_search()
 print_sudoku_solution(solution)
+print
 
+board = 'medium.txt'
+print 'medium.txt'
+csp = create_sudoku_csp(board)
+solution = csp.backtracking_search()
+print_sudoku_solution(solution)
+print
+
+board = 'hard.txt'
+print 'hard.txt'
+csp = create_sudoku_csp(board)
+solution = csp.backtracking_search()
+print_sudoku_solution(solution)
+print
+
+board = 'veryhard.txt'
+print 'veryhard.txt'
+csp = create_sudoku_csp(board)
+solution = csp.backtracking_search()
+print_sudoku_solution(solution)
